@@ -4,7 +4,7 @@ SyMon is a system monitoring tool that will monitor CPU, memory, disk, and netwo
 
 
 
-Credits:
+# Credits:
 
 Thank you to mackerelio for their go-osstat library. This helped me understand how to structure my own library, and also understand what is happening under the hood. 
 
