@@ -38,6 +38,44 @@ func GetStats() (*Stats, error) {
 	return getMemStats(file)
 }
 
+// Pointer to Stats struct that takes the total bytes and converts them to kilobytes
+func MemToKB(mem *Stats) {
+	mem.MemTotal /= 1024
+	mem.MemFree /= 1024
+	mem.MemUsed /= 1024
+	mem.MemAvailable /= 1024
+	mem.Buffers /= 1024
+	mem.Cached /= 1024
+	mem.Active /= 1024
+	mem.Inactive /= 1024
+	mem.SwapCache /= 1024
+	mem.SwapFree /= 1024
+	mem.SwapTotal /= 1024
+	mem.Slab /= 1024
+	mem.PageTotal /= 1024
+	mem.Commited_AS /= 1024
+	mem.VmAllocUsed /= 1024
+}
+
+// Same as the function above, but it converts bytes to MB
+func MemToMB(mem *Stats) {
+	mem.MemTotal /= 1024 * 1024
+	mem.MemFree /= 1024 * 1024
+	mem.MemUsed /= 1024 * 1024
+	mem.MemAvailable /= 1024 * 1024
+	mem.Buffers /= 1024 * 1024
+	mem.Cached /= 1024 * 102
+	mem.Active /= 1024 * 1024
+	mem.Inactive /= 1024 * 1024
+	mem.SwapCache /= 1024 * 1024
+	mem.SwapFree /= 1024 * 1024
+	mem.SwapTotal /= 1024 * 1024
+	mem.Slab /= 1024 * 1024
+	mem.PageTotal /= 1024 * 1024
+	mem.Commited_AS /= 1024 * 1024
+	mem.VmAllocUsed /= 1024 * 1024
+}
+
 func getMemStats(out io.Reader) (*Stats, error) {
 	scanner := bufio.NewScanner(out)
 	var mem Stats
