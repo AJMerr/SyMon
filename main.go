@@ -10,16 +10,23 @@ import (
 )
 
 func main() {
+	// Variable that takes in a pointer the the Stats struct from the CPU package
+	var prevCpuStats *cpu.Stats
+
 	for {
 		// Gets cpu statistics from /cpu/cpu.go
-		cpu, err := cpu.GetStats()
+		currentCpuStats, err := cpu.GetStats()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err)
 			return
 		}
 
-		// Calls the GetCpuPercent function
-		cpuUsage := cpu.GetCpuPercent()
+		var cpuUsage float64
+		// Calls the CalcCpuPercent function if prevCpuStats are empty and sets prevCpuStats to currentCpuStats fpr comparison
+		if prevCpuStats != nil {
+			cpuUsage = cpu.CalcCpuPercent(prevCpuStats, currentCpuStats)
+		}
+		prevCpuStats = currentCpuStats
 
 		// Gets memory statistics from /memory/memory.go
 		mem, err := memory.GetStats()
@@ -49,7 +56,7 @@ func main() {
 		fmt.Printf("memory used: %d %s\n", convertedMemUsed, unit)
 		fmt.Printf("memory free: %d %s\n", convertedMemFree, unit)
 		fmt.Printf("cpu usage: %f%%\n", cpuUsage)
-
+		// Updated stats will be on a 2 second interval.
 		time.Sleep(2 * time.Second)
 	}
 }
