@@ -90,3 +90,11 @@ func getCpuStats(out io.Reader) (*Stats, error) {
 
 	return &cpu, nil
 }
+
+func (s *Stats) GetCpuPercent() float64 {
+	totalNonIdle := s.User + s.System + s.Nice + s.Irq + s.Softirq + s.Steal
+	totalSystem := s.System + s.Irq + s.Softirq
+	totalUsage := totalNonIdle + totalSystem
+
+	return 100 * float64(totalSystem) / float64(totalUsage)
+}
