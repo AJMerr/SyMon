@@ -18,6 +18,9 @@ func main() {
 			return
 		}
 
+		// Calls the GetCpuPercent function
+		cpuUsage := cpu.GetCpuPercent()
+
 		// Gets memory statistics from /memory/memory.go
 		mem, err := memory.GetStats()
 		if err != nil {
@@ -45,8 +48,8 @@ func main() {
 		fmt.Printf("memory total: %d %s\n", convertedMemTotal, unit)
 		fmt.Printf("memory used: %d %s\n", convertedMemUsed, unit)
 		fmt.Printf("memory free: %d %s\n", convertedMemFree, unit)
-		fmt.Printf("cpu total: %d\n", cpu.Total)
+		fmt.Printf("cpu usage: %f%%\n", cpuUsage)
 
-		time.Sleep(time.Second)
+		time.Sleep(2 * time.Second)
 	}
 }
