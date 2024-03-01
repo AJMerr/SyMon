@@ -117,14 +117,14 @@ MainLoop:
 			grid.SetRect(0, 0, termWidth, termHeight)
 
 			grid.Set(
-				ui.NewRow(.5/2, g1),
-				ui.NewRow(.5/2,
-					ui.NewCol(.5/2, p1),
-					ui.NewCol(.5/2, p2),
-					ui.NewCol(.5/2, p3)),
-				ui.NewRow(.5/2,
-					ui.NewCol(.5/2, p4),
-					ui.NewCol(.5/2, p5)),
+				ui.NewRow(.5/4, g1),
+				ui.NewRow(1.0/5,
+					ui.NewCol(1.0/5, p1),
+					ui.NewCol(1.0/5, p2),
+					ui.NewCol(1.0/5, p3)),
+				ui.NewRow(1.0/5,
+					ui.NewCol(1.0/5, p4),
+					ui.NewCol(1.0/5, p5)),
 			)
 			ui.Render(grid)
 
