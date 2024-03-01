@@ -25,7 +25,7 @@ type Stats struct {
 	Slab,
 	PageTotal,
 	Commited_AS,
-	VmAllocUsed uint64
+	VmAllocUsed float64
 	Enabed bool
 }
 
@@ -38,7 +38,7 @@ func GetStats() (*Stats, error) {
 	return getMemStats(file)
 }
 
-func ConvertMemVal(val uint64) (uint64, string) {
+func ConvertMemVal(val float64) (float64, string) {
 	if val < 1024*1024 {
 		return val / 1024, "KB"
 	} else {
@@ -50,7 +50,7 @@ func getMemStats(out io.Reader) (*Stats, error) {
 	scanner := bufio.NewScanner(out)
 	var mem Stats
 
-	memStats := map[string]*uint64{
+	memStats := map[string]*float64{
 		"MemTotal":     &mem.MemTotal,
 		"MemFree":      &mem.MemFree,
 		"MemAvailable": &mem.MemAvailable,
@@ -76,7 +76,7 @@ func getMemStats(out io.Reader) (*Stats, error) {
 		index := res[:i]
 		if ptr := memStats[index]; ptr != nil {
 			val := strings.TrimSpace(strings.TrimRight(res[i+1:], "kB"))
-			if v, err := strconv.ParseUint(val, 10, 64); err == nil {
+			if v, err := strconv.ParseFloat(val, 64); err == nil {
 				*ptr = v * 1024
 			}
 			if index == "MemAvailable" {
