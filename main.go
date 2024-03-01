@@ -2,6 +2,7 @@ package main
 
 import (
 	"SyMon/cpu"
+	"SyMon/disk"
 	"SyMon/memory"
 	"fmt"
 	"log"
@@ -30,7 +31,6 @@ func main() {
 	g1.LabelStyle = ui.NewStyle(ui.ColorWhite)
 	g1.BorderStyle.Fg = ui.ColorWhite
 
-	ui.Render(g1)
 	uiEvents := ui.PollEvents()
 	ticker := time.NewTicker(2 * time.Second).C
 
@@ -84,6 +84,34 @@ MainLoop:
 			p3.BorderStyle.Fg = ui.ColorWhite
 			p3.Text = memFreeToString + unit
 
+			// Get stats from Disk module.
+			diskStats, err := disk.GetStats()
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "%s\n", err)
+			}
+
+			// Setting up TermUI for Disk Stats
+			p4 := widgets.NewParagraph()
+			p4.BorderStyle.Fg = ui.ColorWhite
+
+			p5 := widgets.NewParagraph()
+			p5.BorderStyle.Fg = ui.ColorWhite
+
+			for _, stat := range diskStats {
+				dName := stat.Name
+				dReads := stat.Reads
+				dWrites := stat.Writes
+
+				dReadsToString := strconv.Itoa(int(dReads))
+				dWritesToString := strconv.Itoa(int(dWrites))
+
+				p4.Title = dName
+				p4.Text = dReadsToString
+
+				p5.Title = dName
+				p5.Text = dWritesToString
+			}
+
 			grid := ui.NewGrid()
 			termWidth, termHeight := ui.TerminalDimensions()
 			grid.SetRect(0, 0, termWidth, termHeight)
@@ -94,6 +122,9 @@ MainLoop:
 					ui.NewCol(.5/2, p1),
 					ui.NewCol(.5/2, p2),
 					ui.NewCol(.5/2, p3)),
+				ui.NewRow(.5/2,
+					ui.NewCol(.5/2, p4),
+					ui.NewCol(.5/2, p5)),
 			)
 			ui.Render(grid)
 
